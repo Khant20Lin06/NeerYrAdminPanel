@@ -41,20 +41,20 @@ export default function AuthLogin() {
 
   const handleClickShowPassword = () => setShowPassword((s) => !s);
 
-  const handleChange = (e) =>{
-    const {name,value} = e.target
-    setFormData({...formData,[name]:value})
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e?.preventDefault(); // ✅ Enter pressed => prevent page refresh
+
     if (!formData.phone || !formData.password) {
       toast.warn("Phone and Password ထည့်ပါ");
       return;
     }
 
     setLoading(true);
-
-    // loading toast (optional)
     const tId = toast.loading("Logging in...");
 
     try {
@@ -66,12 +66,11 @@ export default function AuthLogin() {
         render: "Login success ✅",
         type: "success",
         isLoading: false,
-        autoClose: 1500,
+        autoClose: 1500
       });
 
       navigate("/");
     } catch (error) {
-      // ✅ backend error message
       const msg =
         error?.response?.data?.error ||
         error?.response?.data?.detail ||
@@ -83,7 +82,7 @@ export default function AuthLogin() {
         render: msg,
         type: "error",
         isLoading: false,
-        autoClose: 4000,
+        autoClose: 4000
       });
 
       console.error("Error while login: ", error);
@@ -91,6 +90,7 @@ export default function AuthLogin() {
       setLoading(false);
     }
   };
+
 
   return (
     <>
@@ -168,6 +168,7 @@ export default function AuthLogin() {
                 size="large"
                 variant="contained"
                 color="primary"
+                type="submit"
                 onClick={handleSubmit}
                 disabled={loading}
               >

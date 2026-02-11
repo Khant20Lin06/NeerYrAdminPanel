@@ -47,7 +47,7 @@ const PromotionList = () => {
     if (!access) navigate("/login");
     else fetchList();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const fetchList = async (query = q) => {
     try {

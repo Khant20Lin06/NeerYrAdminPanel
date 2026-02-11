@@ -10,6 +10,17 @@ const safeList = (data) => {
   return Array.isArray(list) ? list : [];
 };
 
+// useEffect(() => {
+//     const access = localStorage.getItem("access_token");
+//     const refresh = localStorage.getItem("refresh_token");
+//     if (!access || !refresh) {
+//       navigate("/login", { replace: true });
+//       return;
+//     }
+//     fetchList(access);
+//     // eslint-disable-next-line
+//   }, [navigate]);
+
 const PaymentAccountsPublicList = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);

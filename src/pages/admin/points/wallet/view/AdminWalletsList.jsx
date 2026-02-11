@@ -42,7 +42,7 @@ const AdminWalletsList = () => {
     if (!access) navigate("/login");
     else fetchList();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const fetchList = async () => {
     setLoading(true);

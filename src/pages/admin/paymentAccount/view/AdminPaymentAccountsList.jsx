@@ -63,7 +63,7 @@ const AdminPaymentAccountsList = () => {
   useEffect(() => {
     fetchList();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const toggleOne = (id) => {
     setSelected((prev) => {

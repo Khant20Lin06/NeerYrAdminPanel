@@ -44,7 +44,7 @@ const AdminUsersList = () => {
     if (!access) navigate("/login");
     else fetchList();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const normalizeList = (data) => {
     const list = Array.isArray(data)

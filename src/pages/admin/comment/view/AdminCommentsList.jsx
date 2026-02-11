@@ -53,7 +53,7 @@ const AdminCommentList = () => {
   useEffect(() => {
     if (!access) navigate("/login");
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     // reset selection when list changes

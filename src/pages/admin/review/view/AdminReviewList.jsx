@@ -33,7 +33,7 @@ const AdminReviewList = () => {
     if (!access) navigate("/login");
     else fetchReviews();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const fetchReviews = async () => {
     try {

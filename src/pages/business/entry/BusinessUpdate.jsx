@@ -254,7 +254,7 @@ const BusinessUpdate = () => {
             </FormControl>
 
             {/* ✅ Paid until panel */}
-            <Box sx={{ mt: 1, p: 2, borderRadius: 2, bgcolor: "#111", color: "#fff" }}>
+            <Box sx={{ mt: 1, p: 2, borderRadius: 2, bgcolor: "#fff", color: "#111" }}>
               <Typography fontWeight={800} mb={1}>Paid until:</Typography>
 
               <Stack spacing={1.2}>

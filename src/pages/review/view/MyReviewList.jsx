@@ -19,7 +19,7 @@ const MyReviewList = () => {
     if (!access) navigate("/login");
     else fetchMyReviews();
     // eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   const fetchMyReviews = async () => {
     try {
