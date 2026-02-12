@@ -186,32 +186,51 @@ const BusinessUpdate = () => {
     e.preventDefault();
     const tId = toast.loading("Updating...");
 
-    const data = new FormData();
-    data.append("category", formData.category);
-    data.append("name", formData.name);
-    data.append("description", formData.description || "");
-    data.append("status", formData.status || "draft");
-
-    // ✅ paid_until
-    if (formData.paid_until) data.append("paid_until", formData.paid_until);
-
-    if (formData.logo) data.append("logo", formData.logo);
-    if (formData.cover_image) data.append("cover_image", formData.cover_image);
-
     try {
-      await axios.patch(EndPoint.BUSINESS_UPDATE(id), data, {
-        headers: {
-          Authorization: `Bearer ${access}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const headers = { Authorization: `Bearer ${access}` };
+
+      const hasFile = !!formData.logo || !!formData.cover_image;
+
+      if (!hasFile) {
+        // ✅ JSON PATCH (no file)
+        const payload = {
+          category: formData.category,
+          name: formData.name,
+          description: formData.description || "",
+          status: formData.status || "draft",
+          // ❌ don't send paid_until (backend read-only)
+        };
+
+        await axios.patch(EndPoint.BUSINESS_UPDATE(id), payload, { headers });
+      } else {
+        // ✅ multipart PATCH (has file)
+        const data = new FormData();
+        data.append("category", formData.category);
+        data.append("name", formData.name);
+        data.append("description", formData.description || "");
+        data.append("status", formData.status || "draft");
+
+        if (formData.logo) data.append("logo", formData.logo);
+        if (formData.cover_image) data.append("cover_image", formData.cover_image);
+
+        // ❌ don't send paid_until
+        await axios.patch(EndPoint.BUSINESS_UPDATE(id), data, { headers });
+      }
 
       toast.update(tId, { render: "Updated ✅", type: "success", isLoading: false, autoClose: 1200 });
       navigate("/businesses/list");
     } catch (err) {
-      const msg = err?.response?.data?.detail || err?.response?.data?.error || "Update failed";
-      toast.update(tId, { render: msg, type: "error", isLoading: false, autoClose: 3000 });
       console.error(err?.response?.data || err);
+
+      // show serializer errors nicely
+      const data = err?.response?.data;
+      const msg =
+        (data && typeof data === "object" && JSON.stringify(data)) ||
+        data?.detail ||
+        data?.error ||
+        "Update failed";
+
+      toast.update(tId, { render: msg, type: "error", isLoading: false, autoClose: 4500 });
     }
   };
 
